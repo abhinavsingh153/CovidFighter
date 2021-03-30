@@ -2,6 +2,12 @@ function load_images(){
     //function for loading assets
     enemy1_image = new Image();
     enemy1_image.src= "Assets/v1.png";
+    
+    player_image = new Image();
+    player_image.src = "Assets/superhero.png";
+    
+    gem_image = new Image();
+    gem_image.src = "Assets/gemm.png";
    
 }
 
@@ -42,13 +48,35 @@ function init(){
     
     enemy =[e1,e2,e3]; 
     
-//    player = {
-//        
-//    }
-//    
-//    enemy = {
-//        
-//    }
+    player = {
+        x:20,
+        y:H/2,
+        w: 60,
+        h: 60,
+        speed:20,
+        isMoving : false,
+        
+    };
+    
+    gem = {
+        
+        x: W -100,
+        y : H/2,
+        w : 60,
+        h : 60,
+        
+    };
+    
+    //add event listeners on th scanvas
+    canvas.addEventListener("mousedown" , function(){
+        player.isMoving = true;
+        console.log("mouse pressed");
+    });
+    
+    canvas.addEventListener("mouseup" , function(){
+        player.isMoving = false;
+        console.log("mouse released");
+    });
     
     
 }
@@ -57,6 +85,15 @@ function draw(){
     //console.log("in draw");
     pen.clearRect(0 , 0 , W,H);
     pen.fillStyle = "red";
+    
+    //draw the player
+    pen.drawImage(player_image , player.x , player.y , player.w , player.h);
+    
+    //draw the gem
+    pen.drawImage(gem_image , gem.x ,gem.y , gem.w,gem.h);
+    
+    //draw the score
+    //pen.fillText()
     
 //    //draw enemy
 //    pen.drawImage(enemy1_image,e1.x , e1.y , e1.w , e1.h);
@@ -68,8 +105,10 @@ function draw(){
 
 function update(){
     //console.log("in update")
-    //enemy =1 movement
 
+    if(player.isMoving){
+        player.x+=player.speed;
+    }
     //update enemy by same logic
     
     for(let i = 0 ; i < enemy.length ; i++){
