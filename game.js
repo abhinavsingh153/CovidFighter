@@ -2,12 +2,7 @@ function load_images(){
     //function for loading assets
     enemy1_image = new Image();
     enemy1_image.src= "Assets/v1.png";
-    
-    enemy2_image = new Image();
-    enemy2_image.src = "Assets/v2.png";
-    
-    enemy3_image = new Image();
-    enemy3_image.src= "Assets/v1.png";
+   
 }
 
 function init(){
@@ -45,6 +40,8 @@ function init(){
         speed:40,
     }
     
+    enemy =[e1,e2,e3]; 
+    
 //    player = {
 //        
 //    }
@@ -61,38 +58,26 @@ function draw(){
     pen.clearRect(0 , 0 , W,H);
     pen.fillStyle = "red";
     
-    //draw enemy 1
-    pen.drawImage(enemy1_image,e1.x , e1.y , e1.w , e1.h);
+//    //draw enemy
+//    pen.drawImage(enemy1_image,e1.x , e1.y , e1.w , e1.h);
     
-    //draw enemy2
-    pen.drawImage(enemy2_image , e2.x , e2.y , e2.w , e2.h);
-    
-    //draw enemy3
-    pen.drawImage(enemy3_image , e3.x , e3.y , e3.w , e3.h);
+    for(var i =0 ; i <enemy.length ; i++){
+        pen.drawImage(enemy1_image , enemy[i].x , enemy[i].y , enemy[i].w , enemy[i].w);
+    }
 }
 
 function update(){
     //console.log("in update")
     //enemy =1 movement
-    e1.y +=e1.speed;
+
+    //update enemy by same logic
     
-    if(e1.y + e1.h>= H || e1.y <=0){
-        e1.speed *= -1;
-    }
-    
-    //enemy2 movement
-    e2.y+= e2.speed;
-    
-    if(e2.y + e2.h >= H || e2.y <=0){
-        e2.speed *=-1;
-    }
-    
-    //enemy 3  movement
-    
-    e3.y += e3.speed;
-    
-    if(e3.y + e3.h >= H || e3.y <=0){
-        e3.speed *=-1;
+    for(let i = 0 ; i < enemy.length ; i++){
+        enemy[i].y += enemy[i].speed;
+        
+        if(enemy[i].y + enemy[i].h >= H || enemy[i].y <0){
+            enemy[i].speed*=-1;
+        }
     }
 }
 
