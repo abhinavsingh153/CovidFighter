@@ -19,6 +19,8 @@ function init(){
     W = canvas.width = 700;
     console.log("In init");
     
+    game_over = false;
+    
     pen = canvas.getContext('2d');
     console.log(canvas);
     
@@ -55,6 +57,7 @@ function init(){
         h: 60,
         speed:20,
         isMoving : false,
+        health:100,
         
     };
     
@@ -81,6 +84,18 @@ function init(){
     
 }
 
+function isOverLap(rect1 , rect2){
+    if (rect1.x < rect2.x + rect2.w &&
+   rect1.x + rect1.w > rect2.x &&
+   rect1.y < rect2.y + rect2.h &&
+   rect1.y + rect1.h > rect2.y) {
+    // collision detected!
+        return true;
+    }
+    
+    return false;
+}
+
 function draw(){
     //console.log("in draw");
     pen.clearRect(0 , 0 , W,H);
@@ -93,7 +108,11 @@ function draw(){
     pen.drawImage(gem_image , gem.x ,gem.y , gem.w,gem.h);
     
     //draw the score
-    //pen.fillText()
+    pen.fillStyle = "white";
+    pen.fillText("Health " +  player.health , 10 ,10);
+    
+    pen.fillStyle = "white";
+    pen.fillText("Score" + player.health , W-100 , 10);
     
 //    //draw enemy
 //    pen.drawImage(enemy1_image,e1.x , e1.y , e1.w , e1.h);
@@ -108,7 +127,33 @@ function update(){
 
     if(player.isMoving){
         player.x+=player.speed;
+        player.health+= 20;
     }
+    
+    //overlap between enemy and player
+    
+    for(let i = 0 ; i < enemy.length ; i++){
+        
+        if(isOverLap(player , enemy[i])){
+            player.health-=10;
+            
+            if(player.health <0){
+                
+                console.log(player.health);
+                game_over = true;
+                alert("game over " + player.health);
+            }
+        }
+    }
+    
+    //overlap between player and gem
+    if(isOverLap(player , gem)){
+        console.log("You won");
+        alert("you won!");
+        game_over = true;
+        return;
+    }
+    
     //update enemy by same logic
     
     for(let i = 0 ; i < enemy.length ; i++){
@@ -123,6 +168,10 @@ function update(){
 function gameLoop(){
     
     //console.log("Inside gameLoop");
+    
+    if(game_over == true){
+        clearInterval(f);
+    }
     draw();
     update();
 }
